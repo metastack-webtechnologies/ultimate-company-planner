@@ -1,0 +1,354 @@
+/* General Resets & Variables */
+:root {
+    --primary-color: #5C6BC0; /* A shade of indigo/blue */
+    --secondary-color: #7986CB;
+    --text-color: #333;
+    --light-text-color: #666;
+    --background-color: #F8F9FA; /* Light grey background */
+    --sidebar-bg: #FFFFFF;
+    --header-bg: #FFFFFF;
+    --border-color: #E0E0E0;
+    --hover-bg: #F0F2F5;
+    --active-bg: #E8EAF6; /* Lighter primary for active states */
+    --border-radius: 8px;
+    --padding-base: 16px;
+}
+
+/* Universal box-sizing for consistent layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Use the Inter font */
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: var(--background-color);
+    display: flex; /* Use flexbox for overall app layout */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+/* App Container Layout (Flexbox) */
+.app-container {
+    display: flex;
+    width: 100%; /* Take full width of the body */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px; /* Fixed width for sidebar on larger screens */
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    padding: var(--padding-base);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+    z-index: 1000; /* Ensure sidebar is above content on smaller screens if overlapping */
+}
+
+.sidebar-header {
+    padding-bottom: var(--padding-base);
+    margin-bottom: var(--padding-base);
+    border-bottom: 1px solid var(--border-color); /* Separator */
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none; /* Remove underline from link */
+}
+
+.app-logo i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.sidebar-nav ul {
+    list-style: none; /* Remove bullet points */
+    flex-grow: 1; /* Allows nav to take available space, pushing footer down */
+}
+
+.sidebar-nav li {
+    margin-bottom: 8px; /* Spacing between nav items */
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: var(--light-text-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transitions on hover */
+    font-weight: 500;
+}
+
+.sidebar-nav a:hover {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+}
+
+.sidebar-nav .nav-item.active a {
+    background-color: var(--active-bg);
+    color: var(--primary-color);
+    font-weight: 600; /* Make active item bolder */
+}
+
+.sidebar-nav .nav-icon {
+    margin-right: 10px;
+    font-size: 1.1em;
+    width: 20px; /* Standardize icon width for alignment */
+    text-align: center;
+}
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes content to the bottom of the sidebar */
+    padding-top: var(--padding-base);
+    border-top: 1px solid var(--border-color); /* Separator */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    color: var(--light-text-color);
+    font-weight: 500;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Circular avatar */
+    margin-right: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+}
+
+.logout-link {
+    color: var(--light-text-color);
+    font-size: 1.2em;
+    padding: 5px;
+    border-radius: var(--border-radius);
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.logout-link:hover {
+    color: var(--primary-color);
+    background-color: var(--hover-bg);
+}
+
+
+/* Main Content Styling */
+.main-content {
+    flex-grow: 1; /* Takes remaining width after sidebar */
+    display: flex;
+    flex-direction: column; /* Stack header and content vertically */
+    background-color: var(--background-color);
+    min-width: 0; /* Allows content to shrink on smaller screens */
+}
+
+.main-header {
+    background-color: var(--header-bg);
+    padding: var(--padding-base) 30px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02); /* Subtle shadow */
+}
+
+.page-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.header-actions {
+    /* Styles for buttons, search bar, etc. in the header */
+}
+
+.content-area {
+    padding: 30px;
+    flex-grow: 1; /* Allows content area to fill remaining vertical space */
+    overflow-y: auto; /* Enable scrolling for content if it overflows vertically */
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: inline-flex; /* Allows icon and text to align */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none; /* For button links */
+}
+
+.btn i {
+    margin-right: 8px; /* Spacing for icon */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--active-bg);
+}
+
+/* Dashboard Specific Styles */
+.welcome-section {
+    background-color: var(--sidebar-bg); /* Use sidebar background for cards */
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.welcome-section h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.welcome-section p {
+    color: var(--light-text-color);
+    margin-bottom: 20px;
+}
+
+.dashboard-widgets {
+    display: grid;
+    /* Responsive grid: auto-fit columns with minimum width of 280px */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; /* Spacing between widgets */
+    margin-top: 20px;
+}
+
+.widget {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); /* Inner shadow for subtle depth */
+}
+
+.widget h3 {
+    font-size: 1.2em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.widget .task-list {
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+.widget .task-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: var(--light-text-color);
+}
+
+.widget .task-list li i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.widget .view-all {
+    display: block;
+    text-align: right;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.widget .view-all:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design Media Queries */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px; /* Slightly smaller sidebar on medium screens */
+    }
+    .main-header, .content-area {
+        padding: var(--padding-base) 20px; /* Reduced padding */
+    }
+    .page-title {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column; /* Stack sidebar and main content vertically on small screens */
+    }
+    .sidebar {
+        width: 100%; /* Full width sidebar */
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: row; /* Make sidebar horizontal */
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .sidebar-header {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    .sidebar-nav {
+        display: none; /* Hide main nav on small screens, will need a toggle button for mobile menu */
+    }
+    .sidebar-footer {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .user-info {
+        display: none; /* Hide user info on small horizontal sidebar to save space */
+    }
+    .logout-link {
+        margin-left: auto; /* Push logout icon to the right */
+    }
+    .main-content {
+        padding-top: 0; /* Remove top padding as header is now part of main content flow */
+    }
+    .main-header {
+        padding: 15px 20px;
+    }
+    .dashboard-widgets {
+        grid-template-columns: 1fr; /* Stack widgets vertically on small screens */
+    }
+}

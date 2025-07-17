@@ -1,0 +1,30 @@
+# Byte-code files
+*.pyc
+__pycache__/
+
+# Django stuff:
+*.log
+*.pot
+*.mo
+*.sqlite3
+media/
+static_collected/ # If you ever collect static files to a single dir
+
+# IDEs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.env
+.env.*
+Thumbs.db
+
+# Docker
+.dockerignore
+pg_data/ # Exclude the PostgreSQL data volume
+*.env # Exclude any .env files if you use them for secrets
+
+# Python virtual environment
+venv/
+env/

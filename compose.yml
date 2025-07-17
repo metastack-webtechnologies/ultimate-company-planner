@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16-alpine # Use the latest stable PostgreSQL Alpine image for small size
+    volumes:
+      # Mount a Docker volume to persist database data
+      # This ensures your data is not lost when containers are stopped or recreated
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      # Database credentials and name for PostgreSQL
+      - POSTGRES_DB=company_planner_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+    # Optional: Expose PostgreSQL port if you need to access it directly from your host machine
+    # - "5432:5432"
+
+  web:
+    build: . # Build the image from the current directory (where Dockerfile is located)
+    command: python manage.py runserver 0.0.0.0:8000 # Command to run the Django development server
+    volumes:
+      # Mount the current host directory into the container's /app directory
+      # This allows for live code changes without rebuilding the image
+      - .:/app
+    ports:
+      # Map container port 8000 to host port 8000
+      # This makes your Django app accessible on http://localhost:8000
+      - "8000:8000"
+    environment:
+      # Set DATABASE_URL for Django to connect to the PostgreSQL database
+      # 'db' is the service name defined in this compose.yml, acting as the hostname
+      - DATABASE_URL=postgres://admin:password@db:5432/company_planner_db
+    depends_on:
+      # Ensure the 'db' service starts and is healthy before the 'web' service starts
+      - db
+    # Recommended for local development to restart web service if it crashes
+    restart: on-failure
+
+# Define the Docker volume for persistent database storage
+volumes:
+  pg_data:
