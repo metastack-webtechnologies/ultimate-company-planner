@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Sign Up{% endblock
+%} {% block page_title %}Sign Up{% endblock %} {% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto text-center">
+  <h3 class="text-2xl font-bold text-gray-800 mb-6">Create Your Account</h3>
+  <form method="post" class="space-y-4">
+    {% csrf_token %} {% for field in form %}
+    <div class="mb-4">
+      <label
+        for="{{ field.id_for_label }}"
+        class="block text-gray-700 text-sm font-bold mb-2 text-left"
+      >
+        {{ field.label }}
+      </label>
+      {{ field }} {% if field.help_text %}
+      <p class="text-gray-500 text-xs italic mt-1 text-left">
+        {{ field.help_text }}
+      </p>
+      {% endif %} {% if field.errors %}
+      <ul class="text-red-500 text-xs mt-1 text-left">
+        {% for error in field.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button
+      type="submit"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-200"
+    >
+      Sign Up
+    </button>
+  </form>
+  <p class="mt-6 text-gray-600">
+    Already have an account?
+    <a
+      href="{% url 'login' %}"
+      class="text-blue-600 hover:underline font-semibold"
+      >Login</a
+    >
+  </p>
+</div>
+
+<style>
+  /* Apply form-input class to fields from UserCreationForm */
+  .form-input {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+</style>
+{% endblock %}

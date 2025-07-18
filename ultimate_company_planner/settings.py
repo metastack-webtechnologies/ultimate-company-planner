@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages', # This line must be present and uncommented
     'django.contrib.staticfiles',
     'planner', # Your custom app for the planner features
 ]
@@ -32,7 +32,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware', # This one should remain
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -96,3 +96,8 @@ STATICFILES_DIRS = [
 
 # Default primary key field type for models
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- Custom Authentication Settings --- # ADDED
+LOGIN_REDIRECT_URL = 'dashboard' # Redirect to dashboard after login
+LOGOUT_REDIRECT_URL = 'login'    # Redirect to login page after logout
+LOGIN_URL = 'login'              # URL for the login page (used by @login_required)

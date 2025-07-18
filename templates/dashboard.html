@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {# Inherit from the base layout template #}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %} {# Set page title #}
+{% block page_title %}Dashboard{% endblock %} {# Set header title #}
+
+{% block content %}
+    <div class="welcome-section">
+        <h2>Welcome back, {{ username }}!</h2>
+        <p>This is your daily overview. Get ready to plan your tasks and collaborate effectively.</p>
+        <div class="dashboard-widgets">
+            <div class="widget">
+                <h3>Today's Focus</h3>
+                <p>No major focus set yet. Define your top priority!</p>
+                <button class="btn btn-secondary"><i class="fas fa-pencil-alt"></i> Set Focus</button>
+            </div>
+            <div class="widget">
+                <h3>Upcoming Tasks</h3>
+                {% if user_tasks %}
+                    <ul class="task-list">
+                        {% for task in user_tasks %}
+                            <li>
+                                <i class="fas fa-circle-check {% if task.status == 'CO' %}text-green-500{% else %}text-gray-400{% endif %}"></i>
+                                <a href="{% url 'task_update' task.pk %}" class="text-blue-600 hover:underline">{{ task.name }}</a>
+                                {% if task.due_date %}<span class="text-xs text-gray-500 ml-2"> - Due: {{ task.due_date }}</span>{% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-gray-500">No upcoming tasks. Time to create some!</p>
+                {% endif %}
+                <a href="{% url 'task_list' %}" class="view-all">View All Tasks</a>
+            </div>
+            <div class="widget">
+                <h3>Recent Projects</h3>
+                {% if recent_projects %}
+                    <ul class="task-list">
+                        {% for project in recent_projects %}
+                            <li>
+                                <i class="fas fa-folder-open text-yellow-500"></i>
+                                <a href="{% url 'project_update' project.pk %}" class="text-blue-600 hover:underline">{{ project.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-gray-500">No recent projects. Start a new one!</p>
+                {% endif %}
+                <a href="{% url 'project_list' %}" class="view-all">View All Projects</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Any dashboard-specific JavaScript can go here.
+    </script>
+{% endblock %}
+

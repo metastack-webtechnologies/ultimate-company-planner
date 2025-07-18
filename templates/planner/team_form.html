@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ form_title }}{%
+endblock %} {% block page_title %}{{ form_title }}{% endblock %} {% block
+content %}
+<div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+  <form method="post">
+    {% csrf_token %} {% for field in form %}
+    <div class="mb-4">
+      <label
+        for="{{ field.id_for_label }}"
+        class="block text-gray-700 text-sm font-bold mb-2"
+      >
+        {{ field.label }}
+      </label>
+      {{ field }} {% if field.help_text %}
+      <p class="text-gray-500 text-xs italic mt-1">{{ field.help_text }}</p>
+      {% endif %} {% if field.errors %}
+      <ul class="text-red-500 text-xs mt-1">
+        {% for error in field.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="flex items-center justify-between mt-6">
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200"
+      >
+        Save
+      </button>
+      <a
+        href="{% url 'team_list' %}"
+        class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
+      >
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+
+<style>
+  /* Basic form styling to make Django forms look good with Tailwind */
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+  .form-textarea {
+    @apply h-24 resize-y;
+  }
+  .form-multiselect {
+    @apply h-32;
+  }
+</style>
+{% endblock %}

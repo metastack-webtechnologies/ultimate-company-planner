@@ -1,11 +1,25 @@
 from django.urls import path
-from . import views # Import views from the current app (planner)
+from . import views
 
 urlpatterns = [
-    # The root URL of the 'planner' app will map to the dashboard view
-    # name='dashboard' allows you to refer to this URL by name in templates (e.g., {% url 'dashboard' %})
     path('', views.dashboard_view, name='dashboard'),
-    # As you build out features, you'll add more URL patterns here
-    # Example: path('tasks/', views.task_list_view, name='task_list'),
-    # Example: path('projects/<int:pk>/', views.project_detail_view, name='project_detail'),
+
+    # Task URLs
+    path('tasks/', views.task_list, name='task_list'),
+    path('tasks/create/', views.task_create, name='task_create'),
+    path('tasks/<int:pk>/update/', views.task_update, name='task_update'),
+    path('tasks/<int:pk>/delete/', views.task_delete, name='task_delete'),
+
+    # Project URLs
+    path('projects/', views.project_list, name='project_list'),
+    path('projects/create/', views.project_create, name='project_create'),
+    path('projects/<int:pk>/update/', views.project_update, name='project_update'),
+    path('projects/<int:pk>/delete/', views.project_delete, name='project_delete'),
+
+    # Team URLs
+    path('teams/', views.team_list, name='team_list'),
+    path('teams/create/', views.team_create, name='team_create'),
+    path('teams/<int:pk>/update/', views.team_update, name='team_update'),
+    path('teams/<int:pk>/delete/', views.team_delete, name='team_delete'),
 ]
+

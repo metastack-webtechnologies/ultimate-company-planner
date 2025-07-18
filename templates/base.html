@@ -1,0 +1,144 @@
+{% load static %} <!-- Load Django's staticfiles tag to link CSS/JS -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Dynamically set page title from Django views -->
+    <title>Ultimate Company Planner - {% block title %}{% endblock %}</title>
+    <!-- Link to your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Google Fonts for modern typography (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'dashboard' %}" class="app-logo">
+                    <!-- Dynamic Logo: User initial if logged in, else 'U' -->
+                    {% if user.is_authenticated %}
+                        <img src="https://placehold.co/30x30/5C6BC0/FFFFFF?text={{ user.username|first|upper }}" alt="User Initial Logo" class="app-logo-initial">
+                        <span class="app-logo-text">{{ user.username }}</span>
+                    {% else %}
+                        <img src="https://placehold.co/30x30/5C6BC0/FFFFFF?text=U" alt="Ultimate Planner Logo" class="app-logo-initial">
+                        <span class="app-logo-text">Planner</span>
+                    {% endif %}
+                </a>
+                <div class="sidebar-header-icons">
+                    <button id="notification-bell" class="icon-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button id="sidebar-toggle-btn-close" class="icon-btn close-btn" title="Close Sidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <!-- Navigation items with dynamic 'active' class based on current URL -->
+                    <li class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <a href="{% url 'dashboard' %}">
+                            <i class="fas fa-home nav-icon"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item {% if 'task' in request.resolver_match.url_name %}active{% endif %}">
+                        <a href="{% url 'task_list' %}">
+                            <i class="fas fa-list-check nav-icon"></i> Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item {% if 'project' in request.resolver_match.url_name %}active{% endif %}">
+                        <a href="{% url 'project_list' %}">
+                            <i class="fas fa-folder-open nav-icon"></i> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item {% if 'team' in request.resolver_match.url_name %}active{% endif %}">
+                        <a href="{% url 'team_list' %}">
+                            <i class="fas fa-users nav-icon"></i> Teams
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-calendar-alt nav-icon"></i> Calendar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-microphone-alt nav-icon"></i> Voice Input <!-- Placeholder for AI Voice -->
+                        </a>
+                    </li>
+                    <!-- Add more navigation items here as you develop -->
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <!-- Display first letter of username as a simple avatar -->
+                        <img src="https://placehold.co/30x30/cccccc/ffffff?text={{ user.username|first|upper }}" alt="User Avatar" class="user-avatar">
+                        <span>{{ user.username }}</span>
+                    </div>
+                    <!-- Logout link -->
+                    <a href="{% url 'logout' %}" class="logout-link" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                {% else %}
+                    <div class="auth-links">
+                        <a href="{% url 'login' %}" class="text-blue-600 hover:underline font-semibold">Login</a>
+                        <span class="text-gray-400 mx-1">|</span>
+                        <a href="{% url 'signup' %}" class="text-blue-600 hover:underline font-semibold">Sign Up</a>
+                    </div>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <header class="main-header">
+                <button id="sidebar-toggle-btn-open" class="icon-btn open-btn" title="Open Sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <!-- Display page title from Django views -->
+                <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                <div class="header-actions">
+                    <!-- Dynamic "Add New" button based on current page -->
+                    {% if user.is_authenticated %} {# Only show add new if logged in #}
+                        {% if 'task' in request.resolver_match.url_name %}
+                            <a href="{% url 'task_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Task</a>
+                        {% elif 'project' in request.resolver_match.url_name %}
+                            <a href="{% url 'project_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Project</a>
+                        {% elif 'team' in request.resolver_match.url_name %}
+                            <a href="{% url 'team_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Team</a>
+                        {% else %}
+                            <button class="btn btn-primary"><i class="fas fa-plus"></i> Add New</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </header>
+            <section class="content-area">
+                <!-- Display Django messages (e.g., success/error messages) -->
+                {% if messages %}
+                    <ul class="messages mb-4">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }} p-3 rounded-md mb-2 {% if 'success' in message.tags %}bg-green-100 text-green-800{% elif 'error' in message.tags %}bg-red-100 text-red-800{% elif 'warning' in message.tags %}bg-yellow-100 text-yellow-800{% else %}bg-blue-100 text-blue-800{% endif %}"{% endif %}>
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- Main content for specific pages will be injected here -->
+                {% block content %}
+                {% endblock %}
+            </section>
+        </main>
+    </div>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Link to your main JavaScript file -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <!-- Allow child templates to add extra JavaScript -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
