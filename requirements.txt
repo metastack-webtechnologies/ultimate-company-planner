@@ -1,3 +1,14 @@
 Django==5.0.*
 psycopg2-binary==2.9.*
 dj-database-url==2.1.* # Added for parsing database URL
+django-allauth
+requests
+PyJWT
+cryptography
+social-auth-app-django
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+requests-oauthlib
+python-dotenv

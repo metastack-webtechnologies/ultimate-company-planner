@@ -12,6 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
 </head>
 <body>
     <div class="app-container">
@@ -60,8 +64,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#">
-                            <i class="fas fa-calendar-alt nav-icon"></i> Calendar
+                        <a href= "{% url 'calendar' %}" class="flex items-center px-4 py-2 hover:bg-gray-100 rounded">
+                            <i class="fas fa-calendar-alt nav-icon"></i> calendar
+                            
                         </a>
                     </li>
                     <li class="nav-item">
@@ -80,14 +85,14 @@
                         <span>{{ user.username }}</span>
                     </div>
                     <!-- Logout link -->
-                    <a href="{% url 'logout' %}" class="logout-link" title="Logout">
+                    <a href="{% url 'account_logout' %}" class="logout-link" title="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 {% else %}
                     <div class="auth-links">
-                        <a href="{% url 'login' %}" class="text-blue-600 hover:underline font-semibold">Login</a>
+                        <a href="{% url 'account_login' %}" class="text-blue-600 hover:underline font-semibold">Login</a>
                         <span class="text-gray-400 mx-1">|</span>
-                        <a href="{% url 'signup' %}" class="text-blue-600 hover:underline font-semibold">Sign Up</a>
+                        <a href="{% url 'account_signup' %}" class="text-blue-600 hover:underline font-semibold">Sign Up</a>
                     </div>
                 {% endif %}
             </div>

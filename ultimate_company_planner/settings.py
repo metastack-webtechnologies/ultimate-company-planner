@@ -1,5 +1,11 @@
 import os
+from dotenv import load_dotenv
 import dj_database_url # Import for parsing DATABASE_URL from environment
+
+load_dotenv()
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,9 +27,17 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages', # This line must be present and uncommented
+    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'planner', # Your custom app for the planner features
+    'django.contrib.sites',             # Added for allauth
+    'allauth',                          # Added for allauth
+    'allauth.account',                  # Added for allauth
+    'allauth.socialaccount',           # Added for allauth
+    'allauth.socialaccount.providers.google',   # Google provider
+    'allauth.socialaccount.providers.facebook', # Facebook provider
+    'allauth.socialaccount.providers.apple',    # Apple provider
+    'planner',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -32,8 +46,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware', # This one should remain
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Required for allauth
 ]
 
 ROOT_URLCONF = 'ultimate_company_planner.urls'
@@ -41,9 +56,8 @@ ROOT_URLCONF = 'ultimate_company_planner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # DIRS specifies the path to your global templates directory
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True, # Allows Django to find templates within each app's 'templates' folder
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -60,13 +74,12 @@ WSGI_APPLICATION = 'ultimate_company_planner.wsgi.application'
 # Database configuration for PostgreSQL
 DATABASES = {
     'default': dj_database_url.config(
-        # Default database URL, using the Docker service name 'db' as the hostname
         default='postgres://admin:password@db:5432/company_planner_db',
-        conn_max_age=600 # Max age of database connections in seconds
+        conn_max_age=600
     )
 }
 
-# Password validation (Django defaults for security)
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -84,20 +97,33 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Asia/Kolkata' # Set this to your local timezone, e.g., 'America/New_York'
-USE_I18N = True # Enable Django's internationalization system
-USE_TZ = True # Enable timezone support
+TIME_ZONE = 'Asia/Kolkata'
+USE_I18N = True
+USE_TZ = True
 
-# Static files (CSS, JavaScript, Images) configuration
+# Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'), # Path to your global static directory
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# Default primary key field type for models
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- Custom Authentication Settings --- # ADDED
-LOGIN_REDIRECT_URL = 'dashboard' # Redirect to dashboard after login
-LOGOUT_REDIRECT_URL = 'login'    # Redirect to login page after logout
-LOGIN_URL = 'login'              # URL for the login page (used by @login_required)
+# --- Custom Authentication Settings ---
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# ✅ Google OAuth Configuration
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+SITE_ID = 1

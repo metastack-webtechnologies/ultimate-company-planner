@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Click Below to Open Google Calendar</h2>
+
+<!-- Pure <button>, not <a> -->
+<button
+  id="calendarButton"
+  style="
+    padding: 10px 20px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  "
+>
+  Open Google Calendar
+</button>
+
+<!-- JavaScript handling click -->
+<script>
+  document
+    .getElementById("calendarButton")
+    .addEventListener("click", function () {
+      // ✅ Use same-tab navigation
+      window.location.assign("https://calendar.google.com/calendar/u/0/r");
+    });
+</script>
+
+{% endblock %}

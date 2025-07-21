@@ -21,5 +21,8 @@ urlpatterns = [
     path('teams/create/', views.team_create, name='team_create'),
     path('teams/<int:pk>/update/', views.team_update, name='team_update'),
     path('teams/<int:pk>/delete/', views.team_delete, name='team_delete'),
+
+    # Calendar URLs
+    path('calendar/', views.calendar_embed_view, name='calendar'),
 ]
 
